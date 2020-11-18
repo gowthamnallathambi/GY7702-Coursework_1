@@ -5,6 +5,12 @@ date: "18/11/2020"
 output: pdf_document
 ---
 
+#GY7702-R-for-Data-Science
+
+##_The University of Leicester_ 
+**CourseWork 1**
+[The link to the GitHub Repository](https://github.com/gowthamnallathambi/GY7702-R_for_Data_Science.git)
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -211,7 +217,10 @@ final_data = trafford_complete_covid_data %>%
   full_join (trafford_day_before, by = character()) # Join the table
 
 final_data <- mutate(final_data,                    # Calculate percentage
-                     percentage =      ((final_data$newCasesBySpecimenDate/final_data$newCases_day_before)*100))            
+                     percentage = ( ( final_data$newCasesBySpecimenDate/final_data$newCases_day_before
+                                      )*100
+                                    )
+                     )            
 print(final_data, n=5)                              # print data
 
 ```
