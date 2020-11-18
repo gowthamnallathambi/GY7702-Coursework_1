@@ -9,7 +9,7 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-**Question : 1**
+#Question 1
 
 ```{r load_library, warning=FALSE, message=FALSE}
 rm(list=ls())       # To clear environment
@@ -17,16 +17,16 @@ library(tidyverse)  # Load library in relevant script
 
 ```
 
-#Vector list of 25
+##Question 1.1: 
+
+**Vector list of 25.**
 
 ```{r Vector}
 survey_ans<- c(NA, 3, 4, 4, 5, 2, 4, NA, 6, 3, 5, 4, 0, 5, 7, 5, NA, 5, 2, 4, 
                NA, 3, 3, 5, NA)
 ```
 
-#Question 1.1: 
-
-#To check whether all participants to the survey either completely disagree            or completely agree once the missing values are excluded.
+**To check whether all participants to the survey either completely disagree or  completely agree once the missing values are excluded.**
 
 ```{r Survey coding}
 
@@ -54,12 +54,11 @@ for(iterator in value_vector) {
 rm(iterator)                              # After the loop delete the iterator 
 
 ```
-#Question 1.2:
+##Question 1.2:
 
-#The code necessary to extract the indexes related to the participants in the      survey who at least somehow agree or more.
+**The code necessary to extract the indexes related to the participants in the       survey who at least somehow agree or more.**
 
 ```{r Index extract}
-
 
 survey_index_extract<- c(5,6,7)                # Create a sub vector to extract index
 cat("The participants in the survey who
@@ -67,22 +66,24 @@ at least somehow agree or more : ",
 which(value_vector %in% survey_index_extract)) # Using which condition to extract
 
 ```
-**Question 2**
+#Question 2
 
-```{r libraries, warning=FALSE, message=FALSE}
-
-#libraries for relavent script
+```{r libraries, message=FALSE, warning=FALSE}
 
 rm(list=ls())                       # To clear environment
-#install.packages("palmerpenguins") # Question 2.1: Install palmerpenguins packages
-library(tidyverse)                  # Load tidyverse library in relevant script 
-library(palmerpenguins)             # Load palmerpenguins library in relevant script
+#install.packages("palmerpenguins") # Install palmerpenguins packages
+library(tidyverse)                  # Load tidyverse library in script 
+library(palmerpenguins)             # Load palmerpenguins library in script
 
 ```
 
-#Question 2.2:
+##Question 2.1:
 
-#To create a table showing species, island, bill length and body mass of the           10 Gentoo penguins in the penguins table with the highest body mass.
+**Installed palmerpenuins in above chunk.**
+
+##Question 2.2:
+
+**To create a table showing species, island, bill length and body mass of the           10 Gentoo penguins in the penguins table with the highest body mass.**
 
 ```{r The average bill length per island}
 
@@ -99,9 +100,9 @@ head(body_mass, n=10)                     # Displaying 10 rows from table
 
 ```
 
-#Question 2.3:
+##Question 2.3:
 
-#Calculate average bill length for each Island.
+**Calculate average bill length for each Island.**
 
 ```{r Average bill length}
 
@@ -113,9 +114,9 @@ average_bill_length<- palmer_penguins %>%   # Assigning variables
 
 ```
 
-#Question 2.4:
+##Question 2.4:
 
-#Minimum, median and maximum proportion between bill length and bill depth by species
+**Calculating Minimum, median and maximum proportion between bill length and           bill depth by species.**
 
 ```{r Arithmetic calculations}
 
@@ -140,7 +141,7 @@ print(species_analyse)                         # Print the results
 
 ```
 
-**Question 3**
+#Question 3
 
 ```{r load libraries, warning=FALSE, message=FALSE}
 rm(list=ls())          # To clear environment
@@ -150,15 +151,21 @@ library(tidyverse)     # Load tidyverse library in relevant script
 library(lubridate)     # Load tidyverse library in relevant script  
 ```
 
-#Question 3.1
-#Import covid data using dplyr
+##Question 3.1
 
-```{r Create the complete table}
+**Import covid data.**
+
+```{r import data}
  
 covid_data <-                             # using readr
   readr::read_csv("covid19_cases_20200301_20201017.csv")  
+```
 
-#Question 3.2:
+##Question 3.2:
+
+**Creating a new tibble assigned to my student ID.**
+
+```{r Creating the table}
 
 covid_data %>%
   dplyr::arrange(specimen_date) %>%       # Arrange tibble using dplyr by pipe operator
@@ -169,7 +176,7 @@ covid_data %>%
     cumCasesBySpecimenDate = 0)
     )                                       
 
-# Subset area assigned to my student ID
+#Subset area assigned to my student ID
 
 trafford_complete_covid_data <-           # Storing the data in a new tibble
   covid_data[       
@@ -181,6 +188,9 @@ trafford_complete_covid_data <-           # Storing the data in a new tibble
 
 ```
 
+##Question 3.3:
+
+**Combine the trafford data with new cases and last day cases.**
 
 ```{r Compare data with population}
 
@@ -206,17 +216,15 @@ print(final_data, n=5)                              # print data
 
 ```
 
-**The Covid - 19 daily cases trends on Trafford**
+##Question 3.4:
 
-```{r The development of new cases}
+###The Covid - 19 daily cases trends on Trafford
 
-#All over the UK, the cases has been increasing, but in Trafford we haven't seen      #any high rise in the positive case. eventhough, in some areas as per the daily      #cases are register in surbans. As per the analyzed data, In recent times,there       huge pike in the new cases in the trafford comparatively in March'2020 as the       first wave. There are some chances to spike in getting expose of the covid. Nevertheless, trafford is small town with low density.
+All over the UK, the cases has been increasing,but in Trafford we haven't seen        any high rise in the positive case. eventhough, in some areas as per the daily      cases are register in surbans. As per the analyzed data, In recent times,there       huge pike in the new cases in the trafford comparatively in March'2020 as the       first wave. There are some chances to spike in getting expose of the covid. Nevertheless, trafford is small town with low density.
 
-```
+#Question 4
 
-**Question 4**
-
-# Covid Data analysis with UK datasets
+##Covid Data analysis with UK datasets
 
 ```{r load_libraries, warning=FALSE, message=FALSE}
 
@@ -253,7 +261,7 @@ trafford_covid <-                       #Extract the trafford covid data
 
 ```
 
-**Visualize the graphical representation of analyzed data**
+###Visualize the graphical representation of analyzed data
 
 ```{r Visualize the traffod data}
 
@@ -299,11 +307,9 @@ ggplot(data = covid_population) +     # Plotting the data using ggplot_line plot
   )
 
 ```
-**The Case study - Covid-19 trends in UK**
 
-```{r Trends in UK}
+###The Case study - Covid-19 trends in UK
+
+  The UK is well into the second flood of COVID-19,according to temporary information from the Office for National Statistics. The official's of UK Government information show that cases have been rising dramatically since late August, 2020, with increments over all areas in England as of late. Official UK Government information show that cases have been rising dramatically since late August, 2020, with increments over all locales in England as of late. As per the analyzed data, In recent times,there huge pike in the new cases in the United Kingdom comparatively in March'2020 as the first wave. All the regions in the country getting registered more positives cases everyday, specifically, East midlands cities like Nottingham, Leeds, Derby, Birmingham and so on. We can clearly observe from the above graphical representation, from September the cases has been doubled compared to the past couple of months and keeps climbing on table. Larger cities like Birmingham with most population we have to more worried as new case cases are increasing rapidly, cities like less populous city are registering very low cases, but here too people getting affected. 
   
-  #The UK is well into the second flood of COVID-19,according to temporary information from the Office for National Statistics. The official's of UK Government information show that cases have been rising dramatically since late August, 2020, with increments over all areas in England as of late. Official UK Government information show that cases have been rising dramatically since late August, 2020, with increments over all locales in England as of late. As per the analyzed data, In recent times,there huge pike in the new cases in the United Kingdom comparatively in March'2020 as the first wave. All the regions in the country getting registered more positives cases everyday, specifically, East midlands cities like Nottingham, Leeds, Derby, Birmingham and so on. We can clearly observe from the above graphical representation, from September the cases has been doubled compared to the past couple of months and keeps climbing on table. Larger cities like Birmingham with most population we have to more worried as new case cases are increasing rapidly, cities like less populous city are registering very low cases, but here too people getting affected. 
-  
-  #To conclude, the people should have aware themselves about the Covid-19 impacts. They should follow the government guidelines and stay at indoor, wear face mask and use hand sanitizer, social distancing and so on.
-```
+  To conclude, the people should have aware themselves about the Covid-19 impacts. They should follow the government guidelines and stay at indoor, wear face mask and use hand sanitizer, social distancing and so on.
