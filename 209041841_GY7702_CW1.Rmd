@@ -1,0 +1,309 @@
+---
+title: "209041841_GY7702_CW1"
+author: "Gowtham Nallathambi"
+date: "18/11/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+**Question : 1**
+
+```{r load_library, warning=FALSE, message=FALSE}
+rm(list=ls())       # To clear environment
+library(tidyverse)  # Load library in relevant script
+
+```
+
+#Vector list of 25
+
+```{r Vector}
+survey_ans<- c(NA, 3, 4, 4, 5, 2, 4, NA, 6, 3, 5, 4, 0, 5, 7, 5, NA, 5, 2, 4, 
+               NA, 3, 3, 5, NA)
+```
+
+#Question 1.1: 
+
+#To check whether all participants to the survey either completely disagree            or completely agree once the missing values are excluded.
+
+```{r Survey coding}
+
+missing_value<-is.na(survey_ans)         # Missing values are excluded
+
+value_vector<-survey_ans[!missing_value] # Creating complete value vector using    logical operator
+
+for(iterator in value_vector) {
+  if (iterator == 3) {
+    cat(iterator, "= somehow disagree\n")
+  } else if (iterator == 4) {
+    cat(iterator, "= neither agree nor disagree\n")
+  } else if (iterator == 5) {
+    cat(iterator, "= somehow agree\n")
+  } else if (iterator == 2) {
+    cat(iterator, "= disagree\n")
+  } else if (iterator == 6) {
+    cat(iterator, "= agree\n")
+  } else if (iterator == 7) {
+    cat(iterator, "= completely agree\n")
+  } else {
+    cat("0 = No Response\n")
+  }
+}
+rm(iterator)                              # After the loop delete the iterator 
+
+```
+#Question 1.2:
+
+#The code necessary to extract the indexes related to the participants in the      survey who at least somehow agree or more.
+
+```{r Index extract}
+
+
+survey_index_extract<- c(5,6,7)                # Create a sub vector to extract index
+cat("The participants in the survey who
+at least somehow agree or more : ", 
+which(value_vector %in% survey_index_extract)) # Using which condition to extract
+
+```
+**Question 2**
+
+```{r libraries, warning=FALSE, message=FALSE}
+
+#libraries for relavent script
+
+rm(list=ls())                       # To clear environment
+#install.packages("palmerpenguins") # Question 2.1: Install palmerpenguins packages
+library(tidyverse)                  # Load tidyverse library in relevant script 
+library(palmerpenguins)             # Load palmerpenguins library in relevant script
+
+```
+
+#Question 2.2:
+
+#To create a table showing species, island, bill length and body mass of the           10 Gentoo penguins in the penguins table with the highest body mass.
+
+```{r The average bill length per island}
+
+palmer_penguins <-
+  palmerpenguins::penguins                # Import the data
+gentoo_penguins <- palmer_penguins[       # Subset the Gentoo penguins
+  palmer_penguins$species == "Gentoo",
+  c("species","island", "bill_length_mm", "body_mass_g")
+]
+body_mass<-arrange(                       # Arranging body mass using arrange function
+  gentoo_penguins, 
+  -body_mass_g)
+head(body_mass, n=10)                     # Displaying 10 rows from table
+
+```
+
+#Question 2.3:
+
+#Calculate average bill length for each Island.
+
+```{r Average bill length}
+
+average_bill_length<- palmer_penguins %>%   # Assigning variables
+  group_by(island)%>%                       # Using group_by functions with pipe operator
+  summarize(average_bill_length = mean(bill_length_mm, na.rm = TRUE),
+            .groups = "drop")%>%            # Summarize the mean
+  print(average_bill_length)
+
+```
+
+#Question 2.4:
+
+#Minimum, median and maximum proportion between bill length and bill depth by species
+
+```{r Arithmetic calculations}
+
+species_analyse<-palmer_penguins %>%           # Assigning variables
+  group_by(species)%>%                         # Grouping by species using pipe operator
+  summarise(                                   # Summarize the values
+    Median_bill_length = median(bill_length_mm, 
+                                na.rm = TRUE), # To calculate median
+    Median_bill_depth = median(bill_depth_mm, 
+                               na.rm = TRUE),
+    Min_bill_length = min(bill_length_mm, 
+                          na.rm = TRUE),       # To calculate minimum 
+    Min_bill_depth = min(bill_depth_mm, 
+                         na.rm = TRUE),
+    Max_bill_length = max(bill_length_mm, 
+                          na.rm = TRUE),       # To calculate maximum
+    Max_bill_depth = max(bill_depth_mm, 
+                         na.rm = TRUE), 
+    .groups = "drop"
+  )
+print(species_analyse)                         # Print the results 
+
+```
+
+**Question 3**
+
+```{r load libraries, warning=FALSE, message=FALSE}
+rm(list=ls())          # To clear environment
+
+#install.packages('lubridate') # install packages
+library(tidyverse)     # Load tidyverse library in relevant script 
+library(lubridate)     # Load tidyverse library in relevant script  
+```
+
+#Question 3.1
+#Import covid data using dplyr
+
+```{r Create the complete table}
+ 
+covid_data <-                             # using readr
+  readr::read_csv("covid19_cases_20200301_20201017.csv")  
+
+#Question 3.2:
+
+covid_data %>%
+  dplyr::arrange(specimen_date) %>%       # Arrange tibble using dplyr by pipe operator
+  tidyr::fill(newCasesBySpecimenDate , 
+              cumCasesBySpecimenDate) %>% # Replace NA values with the value available
+  tidyr::replace_na(list(                 # Replace the remaining NA values with 0
+    newCasesBySpecimenDate = 0,
+    cumCasesBySpecimenDate = 0)
+    )                                       
+
+# Subset area assigned to my student ID
+
+trafford_complete_covid_data <-           # Storing the data in a new tibble
+  covid_data[       
+  covid_data$area_name == "Trafford",
+  c("specimen_date", 
+    "newCasesBySpecimenDate", 
+    "cumCasesBySpecimenDate")             # Dropping the area_name
+]
+
+```
+
+
+```{r Compare data with population}
+
+trafford_day_before <- trafford_complete_covid_data # load data   
+
+trafford_day_before <-                              # mutate data with lubridate
+  mutate(trafford_day_before, 
+         day_to_match = trafford_day_before$specimen_date +days(1)) 
+
+trafford_day_before <- dplyr::select(trafford_day_before, 
+                                     newCasesBySpecimenDate, 
+                                     day_to_match) %>% 
+  rename(
+    newCases_day_before = newCasesBySpecimenDate    # subset table
+    ) 
+
+final_data = trafford_complete_covid_data %>% 
+  full_join (trafford_day_before, by = character()) # Join the table
+
+final_data <- mutate(final_data,                    # Calculate percentage
+                     percentage =      ((final_data$newCasesBySpecimenDate/final_data$newCases_day_before)*100))            
+print(final_data, n=5)                              # print data
+
+```
+
+**The Covid - 19 daily cases trends on Trafford**
+
+```{r The development of new cases}
+
+#All over the UK, the cases has been increasing, but in Trafford we haven't seen      #any high rise in the positive case. eventhough, in some areas as per the daily      #cases are register in surbans. As per the analyzed data, In recent times,there       huge pike in the new cases in the trafford comparatively in March'2020 as the       first wave. There are some chances to spike in getting expose of the covid. Nevertheless, trafford is small town with low density.
+
+```
+
+**Question 4**
+
+# Covid Data analysis with UK datasets
+
+```{r load_libraries, warning=FALSE, message=FALSE}
+
+rm(list=ls())           # To clear environment
+library(tidyverse)      # Load tidyverse library
+library("plotly")       # Library to produce the data plot in graphical representation
+library(knitr)          # knitr Library
+```
+
+**To load the population data into a variable and join this information with new table**
+
+```{r Analyze the data, message=FALSE}
+
+# Load .csv file using readr
+
+covid_data <-                           
+  readr::read_csv("covid19_cases_20200301_20201017.csv")
+
+lad19_population <-                     #Rename the column to merge two tables
+  readr::read_csv("lad19_population.csv")%>%
+  dplyr::rename(area_name = lad19_area_name)     
+
+covid_population <-                     #Join the table using full_join
+  full_join(covid_data,
+            lad19_population, 
+            by = "area_name" 
+            ) 
+
+trafford_covid <-                       #Extract the trafford covid data 
+  covid_population[      
+  covid_population$area_name == "Trafford",
+  c("area_name", "specimen_date", "newCasesBySpecimenDate", "cumCasesBySpecimenDate", "area_population")
+]
+
+```
+
+**Visualize the graphical representation of analyzed data**
+
+```{r Visualize the traffod data}
+
+#To analyze the new cases with cumulative case with time frame in trafford region   
+
+flower_plot <- ggplot(data = trafford_covid) +     #plotting the data using flower_plot
+  geom_point(mapping = aes(x = specimen_date,      # mapping the data
+                           y = cumCasesBySpecimenDate, 
+                           color = newCasesBySpecimenDate,
+                           ),
+             alpha = .6
+             ) +
+  labs(                                            # Adding title and axis table values
+    title = "Time series Vs New cases in Trafford",     
+    x = "Speciman date",
+    y = "Total Cases ",
+    color = "New Cases"
+  )
+  
+ggplotly(flower_plot)                              # Calling the flower_plot function
+
+```
+
+
+```{r Visualize the UK data}
+
+# To analyze the new cases with total cases for The united Kingdom region 
+  
+ggplot(data = covid_population) +     # Plotting the data using ggplot_line plot
+  geom_line(
+    mapping = aes(x = specimen_date, 
+                  y = newCasesBySpecimenDate, 
+                  color = "area_name"
+                  ),
+    alpha = .6
+  )+
+  
+  labs(                               # Adding title and axis table values
+    title = "Time series Vs New covid data by regions",     
+    x = "Speciman date",
+    y = "New positive cases ",
+    color = "Region"
+  )
+
+```
+**The Case study - Covid-19 trends in UK**
+
+```{r Trends in UK}
+  
+  #The UK is well into the second flood of COVID-19,according to temporary information from the Office for National Statistics. The official's of UK Government information show that cases have been rising dramatically since late August, 2020, with increments over all areas in England as of late. Official UK Government information show that cases have been rising dramatically since late August, 2020, with increments over all locales in England as of late. As per the analyzed data, In recent times,there huge pike in the new cases in the United Kingdom comparatively in March'2020 as the first wave. All the regions in the country getting registered more positives cases everyday, specifically, East midlands cities like Nottingham, Leeds, Derby, Birmingham and so on. We can clearly observe from the above graphical representation, from September the cases has been doubled compared to the past couple of months and keeps climbing on table. Larger cities like Birmingham with most population we have to more worried as new case cases are increasing rapidly, cities like less populous city are registering very low cases, but here too people getting affected. 
+  
+  #To conclude, the people should have aware themselves about the Covid-19 impacts. They should follow the government guidelines and stay at indoor, wear face mask and use hand sanitizer, social distancing and so on.
+```
