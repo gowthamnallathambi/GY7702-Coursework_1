@@ -4,11 +4,11 @@ author: "Gowtham Nallathambi"
 date: "18/11/2020"
 output: 
   pdf_document: 
-    toc: yes
     fig_width: 10
-    fig_height: 7
+    fig_height: 8
     fig_caption: yes
     number_sections: yes
+    fig_crop: no
 ---
 
 #GY7702-R-for-Data-Science
@@ -83,7 +83,7 @@ which(value_vector %in% survey_index_extract))    # Using which condition to ext
 ```{r libraries, message=FALSE, warning=FALSE}
 
 rm(list=ls())                                   # To clear environment
-#install.packages("palmerpenguins")             # Install palmerpenguins packages
+#install.packages('palmerpenguins')             # Install palmerpenguins packages
 library(tidyverse)                              # Load tidyverse library in script 
 library(palmerpenguins)                         # Load palmerpenguins library in script
 
@@ -191,17 +191,21 @@ covid_data %>%
   tidyr::replace_na(list(                 # Replace the remaining NA values with 0
     newCasesBySpecimenDate = 0,
     cumCasesBySpecimenDate = 0)
-    )                                       
+    )
+print(covid_data, n=5)
 
 #Subset area assigned to my student ID
 
 trafford_complete_covid_data <-           # Storing the data in a new tibble
   covid_data[       
-  covid_data$area_name == "Trafford",
+  covid_data$area_name == "Trafford",     # Dropping the area_name
   c("specimen_date", 
     "newCasesBySpecimenDate", 
-    "cumCasesBySpecimenDate")             # Dropping the area_name
+    "cumCasesBySpecimenDate"
+    )             
 ]
+
+print(trafford_complete_covid_data, n=5)
 
 ```
 
@@ -249,7 +253,7 @@ print(final_data, n=5)                                  # print data
 
 ###The Covid - 19 daily cases trends on Trafford
 
-All over the UK, the cases has been increasing,but in Trafford we haven't seen        any high rise in the positive case. eventhough, in some areas as per the daily      cases are register in surbans. As per the analyzed data, In recent times,there       huge pike in the new cases in the trafford comparatively in March'2020 as the       first wave. There are some chances to spike in getting expose of the covid. Nevertheless, trafford is small town with low density.
+  All over the UK, the cases has been increasing,but in Trafford we haven't seen        any high rise in the positive case. eventhough, in some areas as per the daily      cases are register in surbans. As per the analyzed data, In recent times,there       huge pike in the new cases in the trafford comparatively in March'2020 as the       first wave. There are some chances to spike in getting expose of the covid. Nevertheless, trafford is small town with low density.
 
 #Question 4
 
