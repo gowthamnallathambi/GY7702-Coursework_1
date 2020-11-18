@@ -2,7 +2,13 @@
 title: "209041841_GY7702_CW1"
 author: "Gowtham Nallathambi"
 date: "18/11/2020"
-output: pdf_document
+output: 
+  pdf_document: 
+    toc: yes
+    fig_width: 10
+    fig_height: 7
+    fig_caption: yes
+    number_sections: yes
 ---
 
 #GY7702-R-for-Data-Science
@@ -27,18 +33,18 @@ library(tidyverse)  # Load library in relevant script
 
 **Vector list of 25.**
 
-```{r Vector}
+```{r Vector, warning=FALSE, message=FALSE}
 survey_ans<- c(NA, 3, 4, 4, 5, 2, 4, NA, 6, 3, 5, 4, 0, 5, 7, 5, NA, 5, 2, 4, 
                NA, 3, 3, 5, NA)
 ```
 
 **To check whether all participants to the survey either completely disagree or  completely agree once the missing values are excluded.**
 
-```{r Survey coding}
+```{r Survey coding, warning=FALSE, message=FALSE}
 
 missing_value<-is.na(survey_ans)         # Missing values are excluded
-
-value_vector<-survey_ans[!missing_value] # Creating complete value vector using    logical operator
+value_vector<-
+  survey_ans[!missing_value]             # Creating complete value vector using logical operator
 
 for(iterator in value_vector) {
   if (iterator == 3) {
@@ -64,22 +70,22 @@ rm(iterator)                              # After the loop delete the iterator
 
 **The code necessary to extract the indexes related to the participants in the       survey who at least somehow agree or more.**
 
-```{r Index extract}
+```{r Index extract, warning=FALSE, message=FALSE}
 
-survey_index_extract<- c(5,6,7)                # Create a sub vector to extract index
+survey_index_extract<- c(5,6,7)                   # Create a sub vector to extract index
 cat("The participants in the survey who
 at least somehow agree or more : ", 
-which(value_vector %in% survey_index_extract)) # Using which condition to extract
+which(value_vector %in% survey_index_extract))    # Using which condition to extract
 
 ```
 #Question 2
 
 ```{r libraries, message=FALSE, warning=FALSE}
 
-rm(list=ls())                       # To clear environment
-#install.packages("palmerpenguins") # Install palmerpenguins packages
-library(tidyverse)                  # Load tidyverse library in script 
-library(palmerpenguins)             # Load palmerpenguins library in script
+rm(list=ls())                                   # To clear environment
+#install.packages("palmerpenguins")             # Install palmerpenguins packages
+library(tidyverse)                              # Load tidyverse library in script 
+library(palmerpenguins)                         # Load palmerpenguins library in script
 
 ```
 
@@ -91,18 +97,19 @@ library(palmerpenguins)             # Load palmerpenguins library in script
 
 **To create a table showing species, island, bill length and body mass of the           10 Gentoo penguins in the penguins table with the highest body mass.**
 
-```{r The average bill length per island}
+```{r The average bill length per island, warning=FALSE, message=FALSE}
 
 palmer_penguins <-
-  palmerpenguins::penguins                # Import the data
-gentoo_penguins <- palmer_penguins[       # Subset the Gentoo penguins
+  palmerpenguins::penguins                  # Import the palmerpenguins data
+gentoo_penguins <- palmer_penguins[         # Subset the Gentoo penguins
   palmer_penguins$species == "Gentoo",
-  c("species","island", "bill_length_mm", "body_mass_g")
+  c("species","island", "bill_length_mm", 
+    "body_mass_g")
 ]
-body_mass<-arrange(                       # Arranging body mass using arrange function
+body_mass<-arrange(                         # Arranging body mass using arrange function
   gentoo_penguins, 
   -body_mass_g)
-head(body_mass, n=10)                     # Displaying 10 rows from table
+head(body_mass, n=10)                       # Displaying 10 rows from table
 
 ```
 
@@ -110,11 +117,15 @@ head(body_mass, n=10)                     # Displaying 10 rows from table
 
 **Calculate average bill length for each Island.**
 
-```{r Average bill length}
+```{r Average bill length, warning=FALSE, message=FALSE}
 
 average_bill_length<- palmer_penguins %>%   # Assigning variables
   group_by(island)%>%                       # Using group_by functions with pipe operator
-  summarize(average_bill_length = mean(bill_length_mm, na.rm = TRUE),
+  summarize(
+    average_bill_length = 
+      mean(bill_length_mm, 
+           na.rm = TRUE
+           ),
             .groups = "drop")%>%            # Summarize the mean
   print(average_bill_length)
 
@@ -124,7 +135,7 @@ average_bill_length<- palmer_penguins %>%   # Assigning variables
 
 **Calculating Minimum, median and maximum proportion between bill length and           bill depth by species.**
 
-```{r Arithmetic calculations}
+```{r Arithmetic calculations, warning=FALSE, message=FALSE}
 
 species_analyse<-palmer_penguins %>%           # Assigning variables
   group_by(species)%>%                         # Grouping by species using pipe operator
@@ -150,28 +161,28 @@ print(species_analyse)                         # Print the results
 #Question 3
 
 ```{r load libraries, warning=FALSE, message=FALSE}
-rm(list=ls())          # To clear environment
-
-#install.packages('lubridate') # install packages
-library(tidyverse)     # Load tidyverse library in relevant script 
-library(lubridate)     # Load tidyverse library in relevant script  
+rm(list=ls())                                 # To clear environment
+#install.packages('lubridate')                # install packages
+library(tidyverse)                            # Load tidyverse library in script 
+library(lubridate)                            # Load lubridate library in script  
 ```
 
 ##Question 3.1
 
 **Import covid data.**
 
-```{r import data}
+```{r import data, warning=FALSE, message=FALSE}
  
-covid_data <-                             # using readr
-  readr::read_csv("covid19_cases_20200301_20201017.csv")  
+covid_data <-                                 
+  readr::read_csv("covid19_cases_20200301_20201017.csv")           # using readr
+
 ```
 
 ##Question 3.2:
 
 **Creating a new tibble assigned to my student ID.**
 
-```{r Creating the table}
+```{r Creating the table, warning=FALSE, message=FALSE}
 
 covid_data %>%
   dplyr::arrange(specimen_date) %>%       # Arrange tibble using dplyr by pipe operator
@@ -198,30 +209,39 @@ trafford_complete_covid_data <-           # Storing the data in a new tibble
 
 **Combine the trafford data with new cases and last day cases.**
 
-```{r Compare data with population}
+```{r Compare data with population, warning=FALSE, message=FALSE}
 
-trafford_day_before <- trafford_complete_covid_data # load data   
+trafford_day_before <- 
+  trafford_complete_covid_data                          # load data   
 
-trafford_day_before <-                              # mutate data with lubridate
+trafford_day_before <-                                  # mutate data with lubridate
   mutate(trafford_day_before, 
-         day_to_match = trafford_day_before$specimen_date +days(1)) 
+         day_to_match = 
+           trafford_day_before$specimen_date +
+           days(1)
+         ) 
 
-trafford_day_before <- dplyr::select(trafford_day_before, 
-                                     newCasesBySpecimenDate, 
-                                     day_to_match) %>% 
+trafford_day_before <- 
+  dplyr::select(trafford_day_before,
+                newCasesBySpecimenDate,
+                day_to_match) %>% 
   rename(
-    newCases_day_before = newCasesBySpecimenDate    # subset table
+    newCases_day_before = newCasesBySpecimenDate        # subset table
     ) 
 
 final_data = trafford_complete_covid_data %>% 
-  full_join (trafford_day_before, by = character()) # Join the table
+  full_join (trafford_day_before, by = character())     # Join the table
 
-final_data <- mutate(final_data,                    # Calculate percentage
-                     percentage = ( ( final_data$newCasesBySpecimenDate/final_data$newCases_day_before
+final_data <- mutate(final_data,                        # Calculate percentage
+                     percentage = ( 
+                       ( 
+                       final_data$newCasesBySpecimenDate/
+                       final_data$newCases_day_before
                                       )*100
                                     )
-                     )            
-print(final_data, n=5)                              # print data
+                     )     
+
+print(final_data, n=5)                                  # print data
 
 ```
 
@@ -239,48 +259,55 @@ All over the UK, the cases has been increasing,but in Trafford we haven't seen  
 
 rm(list=ls())           # To clear environment
 library(tidyverse)      # Load tidyverse library
-library("plotly")       # Library to produce the data plot in graphical representation
+library(plotly)         # Library to produce the data plot in graphical representation
 library(knitr)          # knitr Library
 ```
 
 **To load the population data into a variable and join this information with new table**
 
-```{r Analyze the data, message=FALSE}
+```{r Analyze the data, warning=FALSE, message=FALSE}
 
 # Load .csv file using readr
 
 covid_data <-                           
   readr::read_csv("covid19_cases_20200301_20201017.csv")
 
-lad19_population <-                     #Rename the column to merge two tables
+lad19_population <-                              #Rename the column to merge two tables
   readr::read_csv("lad19_population.csv")%>%
   dplyr::rename(area_name = lad19_area_name)     
 
-covid_population <-                     #Join the table using full_join
+covid_population <-                              #Join the table using full_join
   full_join(covid_data,
             lad19_population, 
             by = "area_name" 
             ) 
 
-trafford_covid <-                       #Extract the trafford covid data 
+trafford_covid <-                                #Extract the trafford covid data 
   covid_population[      
   covid_population$area_name == "Trafford",
-  c("area_name", "specimen_date", "newCasesBySpecimenDate", "cumCasesBySpecimenDate", "area_population")
+  c("area_name", "specimen_date", 
+    "newCasesBySpecimenDate", 
+    "cumCasesBySpecimenDate", 
+    "area_population"
+    )
 ]
+
+print(trafford_covid, n=5)
 
 ```
 
 ###Visualize the graphical representation of analyzed data
 
-```{r Visualize the traffod data}
+```{r Visualize the traffod data, warning=FALSE, message=FALSE}
 
 #To analyze the new cases with cumulative case with time frame in trafford region   
 
-flower_plot <- ggplot(data = trafford_covid) +     #plotting the data using flower_plot
-  geom_point(mapping = aes(x = specimen_date,      # mapping the data
-                           y = cumCasesBySpecimenDate, 
-                           color = newCasesBySpecimenDate,
-                           ),
+flower_plot <- ggplot(data = trafford_covid) +     # Plotting the data using flower_plot
+  geom_point(mapping =                             # Mapping the data
+               aes(x = specimen_date,              
+                   y = cumCasesBySpecimenDate, 
+                   color = newCasesBySpecimenDate,
+                  ),
              alpha = .6
              ) +
   labs(                                            # Adding title and axis table values
@@ -295,11 +322,11 @@ ggplotly(flower_plot)                              # Calling the flower_plot fun
 ```
 
 
-```{r Visualize the UK data}
+```{r Visualize the UK data, warning=FALSE, message=FALSE}
 
 # To analyze the new cases with total cases for The united Kingdom region 
   
-ggplot(data = covid_population) +     # Plotting the data using ggplot_line plot
+ggplot(data = covid_population) +             # Plotting the data using ggplot_line plot
   geom_line(
     mapping = aes(x = specimen_date, 
                   y = newCasesBySpecimenDate, 
@@ -308,7 +335,9 @@ ggplot(data = covid_population) +     # Plotting the data using ggplot_line plot
     alpha = .6
   )+
   
-  labs(                               # Adding title and axis table values
+  # Adding title and axis table values
+  
+  labs(                                       
     title = "Time series Vs New covid data by regions",     
     x = "Speciman date",
     y = "New positive cases ",
